@@ -1,18 +1,43 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from bio.models import Profile
+from bio.models import *
 
-
-class UserProfileSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)
-    email = serializers.CharField(source='user.email', read_only=True)
-
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['id', 'username', 'email', 'phone_number', 'address', 'date_of_birth', 'bio']
+        fields = '__all__'
+          # Start with all fields to see what's available
+        read_only_fields = ['id', 'date_joined', 'last_login']
 
 
-class UserSerializer(serializers.ModelSerializer):
+
+class ExtraCurriculumSerializer(serializers.Serializer):
+     class Meta:
+         model = ExtracurricularActivity
+         fields = '__all__'
+
+class EducationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
-        fields = "__all__"
+        model = Education
+        fields = '__all__'
+class ProjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Project
+        fields = '__all__'
+class PublicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publication
+        fields = '__all__'
+class AwardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Award
+    fields = '__all__'
+class TestimonialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = '__all__'
+
+
+# Models => Serializer => Views => urls.py
+# Models =>
+# Serializer = skeleton for the data structure
+# Views = logic to handle requests and responses

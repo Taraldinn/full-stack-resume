@@ -120,6 +120,7 @@ class Profile(AbstractUser):
     date_of_birth = models.DateField(blank=True, null=True)
     bio = models.TextField(blank=True, null=True)
 
+
     def __str__(self):
         return self.username
 
