@@ -3,26 +3,14 @@ from bio.api.serializers import *
 from bio.models import Profile, Education
 from rest_framework import permissions, viewsets
 
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
+from rest_framework.generics import RetrieveAPIView
+from bio.models import Profile
+from bio.api.serializers import ProfileSerializer
+
+class UserProfileView(RetrieveAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-
-class EducationViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows education records to be viewed or edited.
-    """
-    queryset = Education.objects.all()  # Adjust this to your actual Education model
-    serializer_class = EducationSerializer  # Adjust this to your actual Education serializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-
+    lookup_field = 'username'
 
 
 

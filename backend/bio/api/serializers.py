@@ -1,14 +1,6 @@
 from rest_framework import serializers
 from bio.models import *
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = '__all__'
-          # Start with all fields to see what's available
-        read_only_fields = ['id', 'date_joined', 'last_login']
-
-
 
 class ExtraCurriculumSerializer(serializers.Serializer):
      class Meta:
@@ -35,6 +27,28 @@ class TestimonialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testimonial
         fields = '__all__'
+class WorkExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = workExperience
+        fields = '__all__'
+
+class ProfileSerializer(serializers.ModelSerializer):
+    educations = EducationSerializer(many=True, read_only=True)
+    projects = ProjectSerializer(many=True, read_only=True)
+    publications = PublicationSerializer(many=True, read_only=True)
+    awards = AwardSerializer(many=True, read_only=True)
+    testimonials = TestimonialSerializer(many=True, read_only=True)
+    extracurricular_activities = ExtraCurriculumSerializer(many=True, read_only=True)
+    work_experiences= WorkExperienceSerializer(many=True, read_only=True)
+    class Meta:
+        model = Profile
+        fields = '__all__'
+          # Start with all fields to see what's available
+        read_only_fields = ['id', 'date_joined', 'last_login']
+
+
+
+
 
 
 # Models => Serializer => Views => urls.py
