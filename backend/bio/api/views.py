@@ -3,21 +3,23 @@ Docstring for bio.api.views
 
 """
 
+import profile
+
+from django.contrib.auth import get_user_model as user
 from django.forms import ValidationError
-from rest_framework.authentication import get_user_model
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import ModelViewSet
-from bio.models import Profile
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from bio.api.serializers import (
-    ProfileSerializer,
     ProfileListSerializer,
+    ProfileSerializer,
     UserRegistrationSerializers,
 )
-
-User = get_user_model()
+from bio.models import Profile
 
 
 class ProfileViewSet(ModelViewSet):
@@ -75,8 +77,14 @@ class ProfileViewSet(ModelViewSet):
         if serializer.is_valid():
             try:
                 user = serializer.save()
+                refresh = RefreshToken.for_user(user)
                 return Response(
-                    {"message": "User created successfully", "username": user.username},
+                    {
+                        "message": "User created successfully",
+                        "username": user.username,
+                        "access": str(refresh.access_token),
+                        "refresh": str(refresh),
+                    },
                     status=HTTP_201_CREATED,
                 )
             except ValueError as e:
