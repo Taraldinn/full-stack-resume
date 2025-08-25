@@ -3,9 +3,6 @@ Docstring for bio.api.views
 
 """
 
-import profile
-
-from django.contrib.auth import get_user_model as user
 from django.forms import ValidationError
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
